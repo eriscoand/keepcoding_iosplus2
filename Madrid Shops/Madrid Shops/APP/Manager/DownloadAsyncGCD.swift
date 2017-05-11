@@ -38,16 +38,7 @@ public class DownloadAsyncGCD: DownloadAsync {
                 let json_data = try getFileFrom(urlString: urlString)
                 let json = try jsonLoadFromData(dataInput: json_data, toDecode: toDecode)
                 
-                switch toDecode {
-                case "bosses":
-                    try decodeBosses(bosses: json, context: context)
-                case "zones":
-                    try decodeZones(zones: json, context: context)
-                default:
-                    try decodeZones(zones: json, context: context)
-                }
-                
-                sleep(20)
+                try decodeShops(json: json, context: context)
                 
                 DispatchQueue.main.async {
                     completion()

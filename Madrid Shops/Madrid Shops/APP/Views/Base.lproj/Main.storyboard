@@ -1,18 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="YB6-3I-iSo">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Loading View Controller-->
+        <scene sceneID="ku7-1p-9Ep">
+            <objects>
+                <viewController storyboardIdentifier="LoadingViewController" id="bTk-hy-POB" customClass="LoadingViewController" customModule="MadridShops" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hX1-hV-9vt"/>
+                        <viewControllerLayoutGuide type="bottom" id="Vod-FB-PLy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Uai-fG-lmV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="madrid" translatesAutoresizingMaskIntoConstraints="NO" id="prw-lu-ESz">
+                                <rect key="frame" x="115" y="236" width="145" height="194"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="194" id="2kX-wg-5DG"/>
+                                    <constraint firstAttribute="width" constant="145" id="gLV-df-sMi"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="prw-lu-ESz" firstAttribute="centerY" secondItem="Uai-fG-lmV" secondAttribute="centerY" id="FvJ-2a-fuR"/>
+                            <constraint firstItem="prw-lu-ESz" firstAttribute="centerX" secondItem="Uai-fG-lmV" secondAttribute="centerX" id="zK3-ST-y0U"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="logoView" destination="prw-lu-ESz" id="QcJ-0y-vsg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i7P-J7-VNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="972" y="-714"/>
+        </scene>
+        <!--Shops View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Madrid_Shops" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ShopsViewController" customModule="MadridShops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -20,11 +55,57 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="m6n-mQ-fOe">
+                                <rect key="frame" x="0.0" y="64" width="375" height="333.5"/>
+                            </mapView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="N3K-Sd-ad7">
+                                <rect key="frame" x="0.0" y="313.5" width="375" height="333.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="N3K-Sd-ad7" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="3UR-v0-bdE"/>
+                            <constraint firstItem="N3K-Sd-ad7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FyY-r6-8JR"/>
+                            <constraint firstItem="m6n-mQ-fOe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="GQi-2A-qH3"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="N3K-Sd-ad7" secondAttribute="bottom" constant="20" id="YIs-In-Cth"/>
+                            <constraint firstItem="m6n-mQ-fOe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="cFE-Vv-uXq"/>
+                            <constraint firstItem="m6n-mQ-fOe" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="jht-NN-wZB"/>
+                            <constraint firstItem="N3K-Sd-ad7" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="wES-dG-MgW"/>
+                            <constraint firstItem="m6n-mQ-fOe" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="wt9-F9-2fL"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="KZk-1f-MZF"/>
+                    <connections>
+                        <outlet property="collectionView" destination="N3K-Sd-ad7" id="R4f-yn-L7A"/>
+                        <outlet property="mapView" destination="m6n-mQ-fOe" id="dAz-mW-WVy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="972" y="37.331334332833585"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Bjf-vl-dBo">
+            <objects>
+                <navigationController storyboardIdentifier="NavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="YB6-3I-iSo" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="U6e-j9-v2R">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="oA3-co-1av"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4nQ-pF-WrY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-15" y="37"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="madrid" width="100" height="125"/>
+    </resources>
 </document>

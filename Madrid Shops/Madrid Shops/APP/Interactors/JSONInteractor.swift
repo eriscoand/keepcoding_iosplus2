@@ -11,11 +11,14 @@ import CoreData
 
 public class JSONInteractor: Interactor {
     
-    public func execute(urlString: String, toDecode: String, context: NSManagedObjectContext, completion: @escaping (Void) -> Void) {
+    public func execute(urlString: String, toDecode: String, context: NSManagedObjectContext, completion: @escaping (Void) -> Void, onError: @escaping (Void) -> Void) {
         
-        manager.downloadJson(urlString: urlString, toDecode: toDecode, context: context, completion: { (Void) in
+        manager.downloadJson(urlString: urlString, toDecode: toDecode, context: context,
+        completion: { (Void) in
             completion()
-        }, onError: nil)
+        }, onError: { (Void) in
+            onError()
+        })
     }
     
 }

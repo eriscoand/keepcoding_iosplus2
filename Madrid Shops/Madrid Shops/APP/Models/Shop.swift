@@ -13,26 +13,26 @@ extension Shop {
     
     // MARK: - Init
     
-    convenience init (shop: Shop, context: NSManagedObjectContext){
+    convenience init (json: JSONDictonary, context: NSManagedObjectContext){
         
         let entity = NSEntityDescription.entity(forEntityName: Shop.entity().name!, in: context)!
         
         self.init(entity: entity, insertInto: context)
-        self.id = shop.id
-        self.name = shop.name
-        self.address = shop.address
-        self.img = shop.img
-        self.logo_img = shop.logo_img
-        self.telephone = shop.telephone
+        self.id = json["id"] as? String ?? "0"
+        self.name = json["name"] as? String ?? ""
+        self.address = json["address"] as? String ?? ""
+        self.img = json["img"] as? String ?? ""
+        self.logo_img = json["logo_img"] as? String ?? ""
+        self.telephone = json["telephone"] as? String ?? ""
         
-        self.opening_hours_en = shop.opening_hours_en
-        self.opening_hours_es = shop.opening_hours_es
+        self.opening_hours_en = json["opening_hours_en"] as? String ?? ""
+        self.opening_hours_es = json["opening_hours_es"] as? String ?? ""
         
-        self.description_en = shop.description_en
-        self.description_es = shop.description_es
+        self.description_en = json["description_en"] as? String ?? ""
+        self.description_es = json["description_es"] as? String ?? ""
         
-        self.gps_lat = shop.gps_lat
-        self.gps_lng = shop.gps_lng
+        self.gps_lat = json["gps_lat"] as? String ?? ""
+        self.gps_lng = json["gps_lng"] as? String ?? ""
         
         
         saveContext(context: context)
@@ -41,26 +41,24 @@ extension Shop {
     // MARK: - Get or create
     
     //Gets a Shop from DB. If not exists it creates one
-    class func get(shop: Shop,context: NSManagedObjectContext?) -> Shop{
+    class func get(id: String, json: JSONDictonary?, context: NSManagedObjectContext?) -> Shop{
         
         let fr = NSFetchRequest<Shop>(entityName: Shop.entity().name!)
         fr.fetchLimit = 1
         fr.fetchBatchSize = 1
-        fr.predicate = NSPredicate(format: "id == \(shop.id)")
+        fr.predicate = NSPredicate(format: "id == \(id)")
         
-        do{
-            let result = try context?.fetch(fr)
-            guard let resp = result else{
-                return Shop.init(shop: shop, context: context!)
+        do {
+            if let result = try context?.fetch(fr), result.count > 0 {
+                return result.first!
+            }else if let dict = json {
+                return Shop.init(json: dict, context: context!)
             }
-            if(resp.count > 0){
-                return resp.first!
-            }else{
-                return Shop.init(shop: shop, context: context!)
-            }
-        } catch{
-            return Shop.init(shop: shop, context: context!)
+        }catch{
+            return Shop.init()
         }
+        
+        return Shop.init()
         
     }
     

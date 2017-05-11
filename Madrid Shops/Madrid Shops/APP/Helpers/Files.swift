@@ -59,8 +59,11 @@ func fileAlreadyExists(urlString sUrl: String) -> Bool{
 private
 func saveToLocalStorage(stringUrl sUrl: String) throws -> Data{
     
-    let fileData = try? Data(contentsOf: URL(string: sUrl)!)
-    guard let downloadedData = fileData else {
+    guard let url = NSURL(string: sUrl) else{
+        throw Errors.resourcePointedByUrlNotReachable
+    }
+    
+    guard let downloadedData = try? Data(contentsOf: url as URL) else{
         throw Errors.resourcePointedByUrlNotReachable
     }
     
