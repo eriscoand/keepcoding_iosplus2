@@ -13,4 +13,7 @@ enum Errors : Error{
     case resourcePointedByUrlNotReachable
     case wrongJsonFormat
     case NotInLibrary
+    case DBError
+    case keyNotFound(String)
+    case keyPathNotFound(String)
 }

@@ -10,8 +10,7 @@ import Foundation
 
 //This function recieves a url string. First it confirms that the file already exists and returns a Data value.
 //If it doesn't exist, it saves it to the documents folder and returns the Data value
-public
-func getFileFrom(urlString sUrl: String) throws -> Data{
+public func getFileFrom(urlString sUrl: String) throws -> Data{
     if(!fileAlreadyExists(urlString: sUrl)){
         return try saveToLocalStorage(stringUrl: sUrl)
     }else{
@@ -19,9 +18,19 @@ func getFileFrom(urlString sUrl: String) throws -> Data{
     }
 }
 
+//Delete file from library with an internal name
+public func deteleFileFrom(urlString sUrl: String) throws{
+    if(fileAlreadyExists(urlString: sUrl)){
+        let fileManager = FileManager.default
+        let fileName = fileNameFromStringUrl(urlString: sUrl)
+        
+        try fileManager.removeItem(at: URL.init(string: fileName)!)
+        
+    }
+}
+
 //Returns the internal URL of a file
-public
-func getInternalUrl(file sUrl: String) throws -> URL{
+public func getInternalUrl(file sUrl: String) throws -> URL{
     let fileName = fileNameFromStringUrl(urlString: sUrl)
     guard let fileUrl = URL.init(string: fileName) else {
         throw Errors.resourcePointedByUrlNotReachable
@@ -30,14 +39,12 @@ func getInternalUrl(file sUrl: String) throws -> URL{
 }
 
 //Get the name of the file in the document folder. The name of a file is the url hashed
-private
-func fileNameFromStringUrl(urlString sUrl: String) -> String{
+private func fileNameFromStringUrl(urlString sUrl: String) -> String{
     return String(sUrl.hashValue)
 }
 
 //This function check if a file exists on the documents folder
-private
-func fileAlreadyExists(urlString sUrl: String) -> Bool{
+private func fileAlreadyExists(urlString sUrl: String) -> Bool{
     
     let fileManager = FileManager.default
     let fileName = fileNameFromStringUrl(urlString: sUrl)
@@ -56,8 +63,7 @@ func fileAlreadyExists(urlString sUrl: String) -> Bool{
 }
 
 //This function saves a file on a external url to the documents folder and returns the Data value
-private
-func saveToLocalStorage(stringUrl sUrl: String) throws -> Data{
+private func saveToLocalStorage(stringUrl sUrl: String) throws -> Data{
     
     guard let url = NSURL(string: sUrl) else{
         throw Errors.resourcePointedByUrlNotReachable
@@ -79,8 +85,7 @@ func saveToLocalStorage(stringUrl sUrl: String) throws -> Data{
 }
 
 //This function returns the Data value of a file that exists on the documents folder.
-private
-func dataFromStringUrl(stringUrl sUrl: String) throws -> Data{
+private func dataFromStringUrl(stringUrl sUrl: String) throws -> Data{
     
     let fileManager = FileManager.default
     let docsurl = try! fileManager.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)

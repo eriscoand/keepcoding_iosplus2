@@ -11,54 +11,56 @@ import CoreData
 
 extension Shop {
     
-    // MARK: - Init
+    // MARK - Getting shop info for the phone language
     
-    convenience init (json: JSONDictonary, context: NSManagedObjectContext){
-        
-        let entity = NSEntityDescription.entity(forEntityName: Shop.entity().name!, in: context)!
-        
-        self.init(entity: entity, insertInto: context)
-        self.id = json["id"] as? String ?? "0"
-        self.name = json["name"] as? String ?? ""
-        self.address = json["address"] as? String ?? ""
-        self.img = json["img"] as? String ?? ""
-        self.logo_img = json["logo_img"] as? String ?? ""
-        self.telephone = json["telephone"] as? String ?? ""
-        
-        self.opening_hours_en = json["opening_hours_en"] as? String ?? ""
-        self.opening_hours_es = json["opening_hours_es"] as? String ?? ""
-        
-        self.description_en = json["description_en"] as? String ?? ""
-        self.description_es = json["description_es"] as? String ?? ""
-        
-        self.gps_lat = json["gps_lat"] as? String ?? ""
-        self.gps_lng = json["gps_lng"] as? String ?? ""
-        
-        
-        saveContext(context: context)
+    var opening_hours: String {
+        if getPhoneLanguage() == CONSTANTS.DEFAULT_LANGUAGE_CODE {
+            return self.opening_hours_es!
+        }else{
+            return self.opening_hours_en!
+        }
     }
     
-    // MARK: - Get or create
-    
-    //Gets a Shop from DB. If not exists it creates one
-    class func get(id: String, json: JSONDictonary?, context: NSManagedObjectContext?) -> Shop{
-        
-        let fr = NSFetchRequest<Shop>(entityName: Shop.entity().name!)
-        fr.fetchLimit = 1
-        fr.fetchBatchSize = 1
-        fr.predicate = NSPredicate(format: "id == \(id)")
-        
-        do {
-            if let result = try context?.fetch(fr), result.count > 0 {
-                return result.first!
-            }else if let dict = json {
-                return Shop.init(json: dict, context: context!)
-            }
-        }catch{
-            return Shop.init()
+    var text: String {
+        if getPhoneLanguage() == CONSTANTS.DEFAULT_LANGUAGE_CODE {
+            return self.description_es!
+        }else{
+            return self.description_en!
         }
+    }
+    
+    // MARK: - Init with JSON
+    
+    convenience init(json: JSONDictonary, context: NSManagedObjectContext) throws {
+    
+        let entity = NSEntityDescription.entity(forEntityName: Shop.entity().name!, in: context)
         
-        return Shop.init()
+        do{
+            
+            self.init(entity: entity!, insertInto: context)
+            
+            self.id = try parse(json: json, key: "id")
+            
+            self.name = try parse(json: json, key: "name")
+            self.address = try parse(json: json, key: "address")
+            self.img = try parse(json: json, key: "img")
+            self.logo_img = try parse(json: json, key: "logo_img")
+            self.telephone = try parse(json: json, key: "telephone")
+            
+            self.opening_hours_en = try parse(json: json, key: "opening_hours_en")
+            self.opening_hours_es = try parse(json: json, key: "opening_hours_es")
+            
+            self.description_en = try parse(json: json, key: "description_en")
+            self.description_es = try parse(json: json, key: "description_es")
+            
+            self.gps_lat = try parse(json: json, key: "gps_lat")
+            self.gps_lat = self.gps_lat?.trimmingCharacters(in: .whitespaces)
+            self.gps_lng = try parse(json: json, key: "gps_lon")
+            self.gps_lng = self.gps_lng?.trimmingCharacters(in: .whitespaces)
+            
+        }catch{
+            throw Errors.wrongJsonFormat
+        }
         
     }
     

@@ -29,20 +29,20 @@ func jsonLoadFromData(dataInput data: Data, toDecode: String) throws -> JSONArra
     return maybeArray
 }
 
-func decodeShops(json: JSONArray, context: NSManagedObjectContext) throws{
-    
-    let _ = try json.flatMap({try decodeShop(json: $0, context: context)})
-    
+func shopDecode(json: JSONArray, context: NSManagedObjectContext) throws {
+    let _ = try json.flatMap({try Shop.init(json: $0, context: context)})
 }
 
-func decodeShop(json: JSONDictonary, context: NSManagedObjectContext) throws{
-    
-    guard let id = json["id"] as? String else {
-        throw Errors.wrongJsonFormat
+func parse<T>(json: JSONDictonary, key: String) throws -> T {
+    guard let value: T = try? value(json: json, forKey: key) else {
+        throw Errors.keyNotFound(key)
     }
-    
-    let _ = Shop.get(id: id, json: json, context: context)
-    
+    return value
+}
+
+private func value<T>(json: JSONDictonary, forKey key: String) throws -> T {
+    guard let value = json[key] as? T else { throw Errors.keyNotFound(key) }
+    return value
 }
 
 

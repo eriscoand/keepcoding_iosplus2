@@ -18,7 +18,7 @@ public func refresh() -> Bool {
     if  let sDate = stringDateLastRefresh,
         let date = dateFormatter.date(from: sDate){
         let diff = Date.difference(day1: date, day2: Date())
-        if diff < CONSTANTS.REFRESH_EVERY_DAYS {
+        if diff <= CONSTANTS.REFRESH_EVERY_N_DAYS {
             return false
         }
     }

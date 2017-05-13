@@ -28,13 +28,7 @@ extension UINavigationBar {
 extension UINavigationItem {
     
     func setLogo(){
-        let logoImage = UIImage(named: "logo.png")!
-        
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 38, height: 38))
-        imageView.contentMode = .scaleAspectFit
-        
-        imageView.image = logoImage
-        self.titleView = imageView
+        self.title = "Madrid Shops"
         self.titleView?.alpha = 1
     }
     

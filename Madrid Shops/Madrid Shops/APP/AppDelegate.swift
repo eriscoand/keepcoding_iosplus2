@@ -26,21 +26,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if(refresh()){
             loadingViewController() //load LoadingViewController when downloading JSON
-
             
             JSONInteractor().execute(urlString: CONSTANTS.SHOPS_URL,
                                      toDecode: CONSTANTS.JSON_ROOT_SHOPS,
                                      context: context!, completion: {
-                setRefresh()
-                self.loadViewController()
+                                        setRefresh()
+                                        self.loadViewController()
             }, onError: {
-                let alert = UIAlertController(title: "Alert", message: "Some problems downloading the shops data", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                let navigationController = application.windows[0].rootViewController as! UINavigationController
-                let activeViewCont = navigationController.visibleViewController
-                activeViewCont?.present(alert, animated: true, completion: nil)
+                let importantAlert: UIAlertController = UIAlertController(title: "Error", message: "Some problems downloading data...", preferredStyle: .actionSheet)
+                self.window?.rootViewController?.present(importantAlert, animated: true, completion: nil)
             })
-            
         }else{
             loadViewController()
         }

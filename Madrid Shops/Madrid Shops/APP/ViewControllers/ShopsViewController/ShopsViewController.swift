@@ -13,11 +13,19 @@ import CoreData
 
 class ShopsViewController: UIViewController {
     
+    //Searchbar
     lazy var searchBar = UISearchBar()
 
+    //CoreData
     var context: NSManagedObjectContext?
     var fetchedResultsController: NSFetchedResultsController<Shop>? = nil
     
+    //Location
+    var locationManager : CLLocationManager?
+    var location: CLLocation?
+    var locationList: [MapPin]?
+    
+    //Outlets
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UITableView!
     
@@ -25,8 +33,14 @@ class ShopsViewController: UIViewController {
         super.viewDidLoad()
         
         guard let _ = context else { return }
-
-        // Do any additional setup after loading the view.
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        fetchedResultsController?.delegate = self
+        
+        populateLocationList()
+        showLocationsCenteringRegion()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,15 +48,56 @@ class ShopsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func searchButtonClicked(_ sender: Any) {
+        
+        searchBar.placeholder = "Search"
+        searchBar.delegate = self
+        
+        if navigationItem.titleView == searchBar {
+            showLogo()
+        }else{
+            showSeachBar()
+        }
+        
     }
-    */
+    
+    func showLogo(){
+        self.navigationItem.titleView = nil
+        
+        self.searchBar.alpha = 1
+        self.navigationItem.titleView?.alpha = 0
+        
+        self.searchBar.alpha = 0
+        self.navigationItem.setLogo()
+        self.searchBar.text = ""
+        self.callFetch()
+    }
+    
+    func showSeachBar(){
+        navigationItem.setLeftBarButton(nil, animated: true)
+        self.searchBar.alpha = 0
+        navigationItem.titleView = searchBar
+        
+        self.searchBar.alpha = 1
+        self.searchBar.becomeFirstResponder()
+    }
+    
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier {
+            switch identifier
+            {
+            case "ShopDetailSegue":
+                let selectedIndex = collectionView.indexPathForSelectedRow
+                let shop = fetchedResultsController?.object(at: selectedIndex!)
+                let vc = segue.destination as! ShopDetailViewController
+                vc.shop = shop
+            default:
+                break
+            }
+        }
+    }
 
 }

@@ -34,3 +34,19 @@ public func saveContext(context: NSManagedObjectContext, process: Bool = false) 
         context.processPendingChanges()
     }
 }
+
+//Delete all CoreData info
+public func deleteAllRecords(entityName: String, context: NSManagedObjectContext) {
+    
+    let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+    let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+    
+    do {
+        try context.execute(deleteRequest)
+        saveContext(context: context)
+    } catch {
+        print ("There was an error")
+    }
+}
+
+

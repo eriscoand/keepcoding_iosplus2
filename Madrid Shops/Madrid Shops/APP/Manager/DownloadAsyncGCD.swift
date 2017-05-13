@@ -35,10 +35,15 @@ public class DownloadAsyncGCD: DownloadAsync {
             do{
                 self.beginBackgroundUpdateTask()
                 
+                deleteAllRecords(entityName: "Shop", context: context)
+                
+                try deteleFileFrom(urlString: urlString)
                 let json_data = try getFileFrom(urlString: urlString)
                 let json = try jsonLoadFromData(dataInput: json_data, toDecode: toDecode)
                 
-                try decodeShops(json: json, context: context)
+                try shopDecode(json: json, context: context)
+                
+                saveContext(context: context)
                 
                 DispatchQueue.main.async {
                     completion()
