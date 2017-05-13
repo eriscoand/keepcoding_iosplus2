@@ -18,17 +18,6 @@ public func getFileFrom(urlString sUrl: String) throws -> Data{
     }
 }
 
-//Delete file from library with an internal name
-public func deteleFileFrom(urlString sUrl: String) throws{
-    if(fileAlreadyExists(urlString: sUrl)){
-        let fileManager = FileManager.default
-        let fileName = fileNameFromStringUrl(urlString: sUrl)
-        
-        try fileManager.removeItem(at: URL.init(string: fileName)!)
-        
-    }
-}
-
 //Returns the internal URL of a file
 public func getInternalUrl(file sUrl: String) throws -> URL{
     let fileName = fileNameFromStringUrl(urlString: sUrl)

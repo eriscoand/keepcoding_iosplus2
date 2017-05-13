@@ -37,8 +37,9 @@ public class DownloadAsyncGCD: DownloadAsync {
                 
                 deleteAllRecords(entityName: "Shop", context: context)
                 
-                try deteleFileFrom(urlString: urlString)
-                let json_data = try getFileFrom(urlString: urlString)
+                //Refreshing file by date
+                let url = "\(urlString)?date=\(Date.actualDate())"
+                let json_data = try getFileFrom(urlString: url)
                 let json = try jsonLoadFromData(dataInput: json_data, toDecode: toDecode)
                 
                 try shopDecode(json: json, context: context)
