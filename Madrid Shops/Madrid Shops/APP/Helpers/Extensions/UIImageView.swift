@@ -22,8 +22,15 @@ extension UIImageView {
                 do{
                     let d = try getFileFrom(urlString: urlString)
                     DispatchQueue.main.async {
+                        
                         let image = UIImage(data: d)
-                        self.image = image
+                        
+                        UIView.transition(with: self,
+                                          duration: 1,
+                                          options: .transitionCrossDissolve,
+                                          animations: { self.image = image },
+                                          completion: nil)
+                        
                     }
                 }catch{
                     

@@ -35,7 +35,7 @@ public class DownloadAsyncGCD: DownloadAsync {
             do{
                 self.beginBackgroundUpdateTask()
                 
-                deleteAllRecords(entityName: "Shop", context: context)
+                deleteAllRecords(entityName: Shop.entity().name!, context: context)
                 
                 //Refreshing file by date
                 let url = "\(urlString)?date=\(Date.actualDate())"
